@@ -1,6 +1,7 @@
 # This file keeps the current state of the lights.
 
 import BlinkyInterface
+from os import listdir
 
 color = [0,0,255]
 speed = 1.0
@@ -10,8 +11,7 @@ command = "None"
 
 previous_routine_should_continue = True
 
-available_commands = ["Clear","Stop","RoundAndRound","Flash","Snake","OutsideIn","Random","Solid","Rainbow","DCStart","DCStop","OutsideInRemix","Beauty","FourOnTheFloor","AlternatePush","DownbeatPeaks","Dart","Swarm","BrightDark","Christmas1","Christmas2","Christmas3","ChristmasDance","Christmas4","FadeRed","FadeGreen","FadeBlue"]
-
+available_commands = map((lambda x: x.replace(".txt","")), listdir("Patterns"))
 
 # Getters
 
