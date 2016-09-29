@@ -6,16 +6,33 @@ import time
 
 from BlinkyTape import BlinkyTape
 import State
+import RandomGenerator
 
 # blinky_tape = BlinkyTape('/dev/ttyACM0', ledCount=150)
 
 def stop():
 	State.previous_routine_should_continue = False
-	print "Stopping"
+
+def clear():
+	State.previous_routine_should_continue = False
+	for i in range(0,150):
+		# blinky_tape.sendPixel(0,0,0)
+		pass
+	print "Clearing"
+	# blinky.show()
+
+def random():
+	RandomGenerator.new_random_pattern(1000)
+	start_command("_Random")
+
 
 def start_command(command):
 	if command == "Stop":
 		stop()
+	elif command == "Clear":
+		clear()
+	elif command == "Random":
+		random()
 	else:
 		with open("Patterns/%s.txt" % command, 'r') as instruction_file:
 			instructions = instruction_file.readlines()
@@ -46,6 +63,7 @@ def execute_instruction(instruction):
 			# blinky_tape.sendPixel(range_triple[2][0], range_triple[2][1], range_triple[2][2])
 			pass
 		print "Sending (%s,%s,%s)" % (str(range_triple[2][0]), str(range_triple[2][1]), str(range_triple[2][2]))
+	# blinky.show()
 	time.sleep(1.0 / speed)
 
 

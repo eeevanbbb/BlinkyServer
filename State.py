@@ -14,6 +14,8 @@ previous_routine_should_continue = True
 available_commands = map((lambda x: x.replace(".txt","")), listdir("Patterns"))
 available_commands.remove(".DS_Store")
 
+special_commands = ["Stop", "Clear", "Random"]
+
 # Getters
 
 def get_available_commands():
@@ -37,9 +39,7 @@ def get_dyna_color():
 
 # Setters
 
-def set_current_command(new_command):
-	assert(new_command in available_commands)
-	
+def set_current_command(new_command):	
 	BlinkyInterface.start_command(new_command)
 	global command
 	command = new_command

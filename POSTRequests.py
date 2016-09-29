@@ -38,7 +38,7 @@ def process_route_with_data(route, data):
 	return success
 
 def validate_command(command):
-	return command == "Stop" or command in State.get_available_commands()
+	return command in State.special_commands or command in State.get_available_commands()
 
 def validate_color(color):
 	if len(color) != 3:
