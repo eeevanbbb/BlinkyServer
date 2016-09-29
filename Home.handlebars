@@ -1,0 +1,65 @@
+<html>
+	<head>
+		<title>LET'S BLINK THIS SHIT</title>
+	</head>
+	<body>
+		<h1 align="center">Welcome to BlinkyTape!</h1>
+		<h3 align="center">Let's control some mother fucking lights.</h3>
+
+		<br>
+
+		<div style="width: 50%; float: left;">
+			<h2>Commands</h2>
+			{{#each commands}}
+				<input class="command_button" type="radio" name="command" value={{this}} onclick="handleClick(this);"{{#ifEqual currentCommand}} checked{{/ifEqual}}>{{this}}<br>
+			{{/each}}
+		</div>
+
+		<div style="width: 50%; float: right;">
+			<h1>Dynamic Color</h1>
+			<input id="dyna_off" type="radio" name="dyna" value="false" onclick="handleDyna(this);"{{#ifNot dyna_color}} checked{{/ifNot}}>Off<br>
+			<input id="dyna_on" type="radio" name="dyna" value="true" onclick="handleDyna(this);"{{#if dyna_color}} checked{{/if}}>On<br>
+		</div>
+
+		<div style="width: 50%; float: right;">
+			<h1>Speed</h1>
+			<input id="speed_input" type="text" name="speed" value={{speed}}>
+			<button type="button" onclick="setSpeed()">Send</button>
+		</div>
+
+		<div style="width: 50%; float: right;">
+			<h1>Color</h1>
+			<p>Red: </p>
+			<input id="red_input" type="text" name="color" value={{ red }}><br>
+			<p>Green: </p>
+			<input id="green_input" type="text" name="color" value={{ green }}><br>
+			<p>Blue: </p>
+			<input id="blue_input" type="text" name="color" value={{ blue }}><br>
+			<button type="button" onclick="setColor()">Send</button>
+		</div>
+
+		<script>
+		function handleClick(radioButton) {
+			console.log("Selected: " + radioButton.value);
+			// Send update
+		}
+
+		function setSpeed() {
+			var speed = document.getElementById("speed_input").value;
+			console.log("Speed: "+speed);
+			// Send update
+		}
+
+		function setColor() {
+			var red = document.getElementById("red_input").value;
+			var green = document.getElementById("green_input").value;
+			var blue = document.getElementById("blue_input").value;
+			var color = [red, green, blue];
+			console.log("Color: "+color);
+			// Send update
+		}
+
+		
+		</script>
+	</body>
+</html>
