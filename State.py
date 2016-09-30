@@ -21,7 +21,7 @@ if ".DS_Store" in available_commands:
 def is_debug_machine():
 	return DEBUG_MACHINE
 
-special_commands = ["Stop", "Clear", "Random"]
+special_commands = ["Random"]
 
 # Getters
 

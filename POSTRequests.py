@@ -3,7 +3,7 @@
 import State
 import BlinkyInterface
 
-valid_routes = ["/update"]
+valid_routes = ["/update","/stop","/clear"]
 
 MAX_SPEED = 60
 MAX_BPM = 600
@@ -26,6 +26,7 @@ def process_route_with_data(route, data):
 				BlinkyInterface.start_command(new_command)
 		if "color" in data:
 			new_color = data["color"]
+			print new_color
 			if validate_color(new_color):
 				success = State.set_color(new_color) and success
 		if "speed" in data:
@@ -40,6 +41,14 @@ def process_route_with_data(route, data):
 			new_dyna_color = data["dynamic_color"]
 			if validate_dynamic_color(new_dyna_color):
 				success = State.set_dyna_color(new_dyna_color) and success
+	elif route == "/stop":
+		BlinkyInterface.start_command("Stop")
+		success = True
+	elif route == "/clear":
+		BlinkyInterface.start_command("Clear")
+		success = State.set_current_command(None) and success
+	else:
+		success = False
 	
 	return success
 

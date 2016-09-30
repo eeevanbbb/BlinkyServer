@@ -15,6 +15,12 @@
 			{{/each}}
 		</div>
 
+		<div style="width: 50%; float: left;">
+			<h2>Controls</h2>
+			<button type="button" onclick="sendStop()">Stop</button>
+			<button type="button" onclick="sendClear()">Clear</button>
+		</div>
+
 		<div style="width: 50%; float: right;">
 			<h1>Dynamic Color</h1>
 			<input id="dyna_off" type="radio" name="dyna" value="false" onclick="handleDyna(this);"{{#ifNot dyna_color}} checked{{/ifNot}}>Off<br>
@@ -46,15 +52,15 @@
 		}
 
 		function setSpeed() {
-			var speed = document.getElementById("speed_input").value;
+			var speed = parseFloat(document.getElementById("speed_input").value);
 			console.log("Speed: "+speed);
 			sendUpdate({"speed": speed});
 		}
 
 		function setColor() {
-			var red = document.getElementById("red_input").value;
-			var green = document.getElementById("green_input").value;
-			var blue = document.getElementById("blue_input").value;
+			var red = parseInt(document.getElementById("red_input").value);
+			var green = parseInt(document.getElementById("green_input").value);
+			var blue = parseInt(document.getElementById("blue_input").value);
 			var color = [red, green, blue];
 			console.log("Color: "+color);
 			sendUpdate({"color": color});
@@ -70,14 +76,32 @@
 			sendUpdate({"dynamic_color": boolValue});
 		}
 
+		function stop() {
+
+		}
+
 		//http://stackoverflow.com/questions/24468459/sending-a-json-to-server-and-retrieving-a-json-in-return-without-jquery
-		function sendUpdate(data) {
+		function sendRequest(route, data) {
 			xhr = new XMLHttpRequest();
-			var url = "/update";
-			xhr.open("POST", url, true);
+			xhr.open("POST", route, true);
 			xhr.setRequestHeader("Content-type", "application/json");
 			xhr.send(JSON.stringify(data));
-		}		
+		}
+
+		function sendUpdate(data) {
+			var route = "/update";
+			sendRequest(route, data);
+		}	
+
+		function sendStop() {
+			var route = "/stop";
+			sendRequest(route, {});
+		}	
+
+		function sendClear() {
+			var route = "/clear";
+			sendRequest(route, {});
+		}
 		</script>
 	</body>
 </html>
