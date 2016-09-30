@@ -40,14 +40,15 @@
 
 		<script>
 		function handleClick(radioButton) {
-			console.log("Selected: " + radioButton.value);
-			// Send update
+			var command = radioButton.value;
+			console.log("Selected: " + command);
+			sendUpdate({"command": command});
 		}
 
 		function setSpeed() {
 			var speed = document.getElementById("speed_input").value;
 			console.log("Speed: "+speed);
-			// Send update
+			sendUpdate({"speed": speed});
 		}
 
 		function setColor() {
@@ -56,10 +57,27 @@
 			var blue = document.getElementById("blue_input").value;
 			var color = [red, green, blue];
 			console.log("Color: "+color);
-			// Send update
+			sendUpdate({"color": color});
 		}
 
-		
+		function handleDyna(radioButton) {
+			var value = radioButton.value;
+			console.log("DynaColor: " + value);
+			var boolValue = true;
+			if (value == "false") {
+				boolValue = false;
+			}
+			sendUpdate({"dynamic_color": boolValue});
+		}
+
+		//http://stackoverflow.com/questions/24468459/sending-a-json-to-server-and-retrieving-a-json-in-return-without-jquery
+		function sendUpdate(data) {
+			xhr = new XMLHttpRequest();
+			var url = "/update";
+			xhr.open("POST", url, true);
+			xhr.setRequestHeader("Content-type", "application/json");
+			xhr.send(JSON.stringify(data));
+		}		
 		</script>
 	</body>
 </html>

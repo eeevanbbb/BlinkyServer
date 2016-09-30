@@ -1,7 +1,7 @@
 # This file handles routing and serving requests made to the application.
 
 import BaseHTTPServer
-import simplejson
+import json
 
 from Utilities import log_debug
 import GETRequests
@@ -43,7 +43,8 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 	def do_POST(s):
 		if POSTRequests.is_valid_route(s.path):
-			post_data = simplejson.loads(s.rfile.read(int(s.headers['Content-Length'])))
+			raw_data = s.rfile.read(int(s.headers['Content-Length']))
+			post_data = json.loads(raw_data)
 			success = POSTRequests.process_route_with_data(s.path, post_data)			
 
 			send_json_headers(s)
