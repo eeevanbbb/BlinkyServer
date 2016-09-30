@@ -14,7 +14,7 @@ def instruction_for_ranges(range_mappings, speed="Speed"):
 	full_ranges = []
 	for current_range in sorted_ranges:
 		if current_range[0] > current:
-			full_ranges.append((0,current_range[0]))
+			full_ranges.append((current,current_range[0]))
 		full_ranges.append(current_range)
 		current = current_range[1]
 	if current < 150:
