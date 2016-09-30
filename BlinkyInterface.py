@@ -66,7 +66,7 @@ def execute_instruction(instruction):
 			if not State.is_debug_machine():
 				blinky_tape.sendPixel(range_triple[2][0], range_triple[2][1], range_triple[2][2])
 	if not State.is_debug_machine():
-		blinky.show()
+		blinky_tape.show()
 	time.sleep(1.0 / speed)
 
 
