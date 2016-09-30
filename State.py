@@ -26,7 +26,7 @@ special_commands = ["Stop", "Clear", "Random"]
 # Getters
 
 def get_available_commands():
-	return available_commands
+	return available_commands + special_commands
 
 def get_command():
  	return command

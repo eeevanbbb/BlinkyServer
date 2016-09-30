@@ -22,7 +22,7 @@ def clear():
 			blinky_tape.sendPixel(0,0,0)
 	print "Clearing"
 	if not State.is_debug_machine():
-		blinky.show()
+		blinky_tape.show()
 
 def random():
 	RandomGenerator.new_random_pattern(1000)

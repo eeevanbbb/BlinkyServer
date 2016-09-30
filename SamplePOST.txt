@@ -1,1 +1,1 @@
-{ "command": "Random", "speed": 0.5 }
+{ "command": "Clear", "speed": 0.5 }
