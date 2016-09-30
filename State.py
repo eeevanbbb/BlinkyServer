@@ -1,6 +1,5 @@
 # This file keeps the current state of the lights.
 
-import BlinkyInterface
 from os import listdir
 
 color = [0,0,255]
@@ -12,7 +11,15 @@ command = "None"
 previous_routine_should_continue = True
 
 available_commands = map((lambda x: x.replace(".txt","")), listdir("Patterns"))
-available_commands.remove(".DS_Store")
+
+# There's probably a better way to do this, but this works on MacOS
+DEBUG_MACHINE = False
+if ".DS_Store" in available_commands:
+	available_commands.remove(".DS_Store")
+	DEBUG_MACHINE = True
+
+def is_debug_machine():
+	return DEBUG_MACHINE
 
 special_commands = ["Stop", "Clear", "Random"]
 
@@ -43,7 +50,6 @@ def get_dyna_color():
 # Setters
 
 def set_current_command(new_command):	
-	BlinkyInterface.start_command(new_command)
 	global command
 	command = new_command
 	return True

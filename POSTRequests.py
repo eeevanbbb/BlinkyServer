@@ -1,6 +1,7 @@
 # This file handles the POST requests for this application.
 
 import State
+import BlinkyInterface
 
 valid_routes = ["/update"]
 
@@ -22,6 +23,7 @@ def process_route_with_data(route, data):
 			new_command = data["command"]
 			if validate_command(new_command):
 				success = State.set_current_command(new_command) and success 
+				BlinkyInterface.start_command(new_command)
 		if "color" in data:
 			new_color = data["color"]
 			if validate_color(new_color):

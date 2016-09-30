@@ -8,7 +8,9 @@ from BlinkyTape import BlinkyTape
 import State
 import RandomGenerator
 
-# blinky_tape = BlinkyTape('/dev/ttyACM0', ledCount=150)
+blinky_tape = None
+if not State.is_debug_machine():
+	blinky_tape = BlinkyTape('/dev/ttyACM0', ledCount=150)
 
 def stop():
 	State.previous_routine_should_continue = False
@@ -16,10 +18,11 @@ def stop():
 def clear():
 	State.previous_routine_should_continue = False
 	for i in range(0,150):
-		# blinky_tape.sendPixel(0,0,0)
-		pass
+		if not State.is_debug_machine():
+			blinky_tape.sendPixel(0,0,0)
 	print "Clearing"
-	# blinky.show()
+	if not State.is_debug_machine():
+		blinky.show()
 
 def random():
 	RandomGenerator.new_random_pattern(1000)
@@ -60,10 +63,10 @@ def execute_instruction(instruction):
 	speed = parse_speed(fields[1])
 	for range_triple in ranges:
 		for i in range(range_triple[0], range_triple[1]):
-			# blinky_tape.sendPixel(range_triple[2][0], range_triple[2][1], range_triple[2][2])
-			pass
-		print "Sending (%s,%s,%s)" % (str(range_triple[2][0]), str(range_triple[2][1]), str(range_triple[2][2]))
-	# blinky.show()
+			if not State.is_debug_machine():
+				blinky_tape.sendPixel(range_triple[2][0], range_triple[2][1], range_triple[2][2])
+	if not State.is_debug_machine():
+		blinky.show()
 	time.sleep(1.0 / speed)
 
 
