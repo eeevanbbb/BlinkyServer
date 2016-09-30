@@ -34,6 +34,10 @@ def process_route_with_data(route, data):
 			new_bpm = data["bpm"]
 			if validate_bpm(new_bpm):
 				success = State.set_bpm(new_bpm) and success
+		if "dynamic_color" in data:
+			new_dyna_color = data["dynamic_color"]
+			if validate_dynamic_color(new_dyna_color):
+				success = State.set_dyna_color(new_dyna_color) and success
 	
 	return success
 
@@ -53,3 +57,6 @@ def validate_speed(speed):
 
 def validate_bpm(bpm):
 	return bpm >= 0 and bpm <= MAX_BPM
+
+def validate_dynamic_color(dyna_color):
+	return type(dyna_color) == type(True)

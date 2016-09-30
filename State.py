@@ -27,6 +27,9 @@ def get_command():
 def get_color():
  	return color
 
+def get_inverse_color():
+	return [255-color[0], 255-color[1], 255-color[2]]
+
 def get_speed():
 	return speed
 
@@ -58,4 +61,9 @@ def set_speed(new_speed):
 def set_bpm(new_bpm):
 	global bpm
 	bpm = new_bpm
+	return True
+
+def set_dyna_color(new_dyna_color):
+	global dyna_color
+	dyna_color = new_dyna_color
 	return True

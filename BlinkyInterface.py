@@ -83,15 +83,22 @@ def parse_ranges(ranges):
 		start = int(boundaries[0])
 		end = int(boundaries[1])
 		color = State.get_color()
-		if comps[1] != "Color":
+		if comps[1] == "Inverse":
+			color = State.get_inverse_color()
+		elif comps[1] != "Color":
 			rgb_strings = comps[1].replace("(","").replace(")","").split(",")
 			color = [int(s) for s in rgb_strings]
 		range_triples.append((start,end,color))
 	return range_triples
 
 # Returns a float
+FLASH_SPEED = 5.0
 def parse_speed(speed_string):
 	if speed_string == "Speed":
 		return State.get_speed()
+	elif speed_string == "BPM":
+		return State.get_bpm() / 60.0 + FLASH_SPEED
+	elif speed_string == "FLASH":
+		return FLASH_SPEED
 	else:
 		return float(speed_string)
