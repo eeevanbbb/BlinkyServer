@@ -2,13 +2,17 @@
 
 import BaseHTTPServer
 import json
+import State
 
 from Utilities import log_debug
 import GETRequests
 import POSTRequests
 
-HOST_NAME = 'localhost' #'192.168.0.138'
+HOST_NAME = '192.168.0.138'
 PORT_NUMBER = 9001
+
+if State.is_debug_machine():
+	HOST_NAME = 'localhost'
 
 def send_html_headers(s):
 	s.send_response(200)
