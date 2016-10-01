@@ -35,10 +35,12 @@ def start_command(command):
 	elif command == "Clear":
 		clear()
 	elif command == "Random":
+		stop()
 		random()
 	else:
 		with open("Patterns/%s.txt" % command, 'r') as instruction_file:
 			instructions = instruction_file.readlines()
+		stop()
 		start_with_instructions(instructions)
 
 def start_with_instructions(instructions):
