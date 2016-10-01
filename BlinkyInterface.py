@@ -42,7 +42,7 @@ def start_command(command):
 		start_with_instructions(instructions)
 
 def start_with_instructions(instructions):
-	previous_routine_should_continue = False
+	State.previous_routine_should_continue = False
 	thread = threading.Thread(target=blinky_loop, args=(instructions, ))
 	thread.daemon = True
 	thread.start()
@@ -55,7 +55,8 @@ def blinky_loop(instructions):
 		if not State.previous_routine_should_continue:
 			return
 
-	blinky_loop(instructions)
+	if State.previous_routine_should_continue:
+		blinky_loop(instructions)
 
 def execute_instruction(instruction):
 	fields = parse_fields(instruction)
