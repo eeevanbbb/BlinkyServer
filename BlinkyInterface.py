@@ -13,10 +13,10 @@ if not State.is_debug_machine():
 	blinky_tape = BlinkyTape('/dev/ttyACM0', ledCount=150)
 
 def stop():
-	State.previous_routine_should_continue = False
+	State.running_loop = ""
 
 def clear():
-	State.previous_routine_should_continue = False
+	State.running_loop = ""
 	for i in range(0,150):
 		if not State.is_debug_machine():
 			blinky_tape.sendPixel(0,0,0)
@@ -39,24 +39,22 @@ def start_command(command):
 	else:
 		with open("Patterns/%s.txt" % command, 'r') as instruction_file:
 			instructions = instruction_file.readlines()
-		start_with_instructions(instructions)
+		start_with_instructions(instructions, command)
 
-def start_with_instructions(instructions):
-	State.previous_routine_should_continue = False
-	thread = threading.Thread(target=blinky_loop, args=(instructions, ))
+def start_with_instructions(instructions, name):
+	State.running_loop = name
+	thread = threading.Thread(target=blinky_loop, args=(instructions, name, ))
 	thread.daemon = True
 	thread.start()
 
-def blinky_loop(instructions):
-	State.previous_routine_should_continue = True
-
+def blinky_loop(instructions, name):
 	for instruction in instructions:
 		execute_instruction(instruction)
-		if not State.previous_routine_should_continue:
+		if State.running_loop != name:
 			return
 
-	if State.previous_routine_should_continue:
-		blinky_loop(instructions)
+	if State.running_loop == name:
+		blinky_loop(instructions, name)
 
 def execute_instruction(instruction):
 	fields = parse_fields(instruction)

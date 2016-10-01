@@ -8,7 +8,7 @@ dyna_color = False
 bpm = 120
 command = "None"
 
-previous_routine_should_continue = True
+running_loop = ""
 
 available_commands = map((lambda x: x.replace(".txt","")), listdir("Patterns"))
 for command in available_commands:
