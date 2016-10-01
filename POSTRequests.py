@@ -46,10 +46,10 @@ def process_route_with_data(route, data):
 		success = True
 	elif route == "/clear":
 		BlinkyInterface.start_command("Clear")
-		success = State.set_current_command(None) and success
+		success = State.set_current_command("None") and success
 	else:
 		success = False
-	
+
 	return success
 
 def validate_command(command):
