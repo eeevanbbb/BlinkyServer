@@ -11,6 +11,9 @@ command = "None"
 previous_routine_should_continue = True
 
 available_commands = map((lambda x: x.replace(".txt","")), listdir("Patterns"))
+for command in available_commands:
+	if command[0] == "_":
+		available_commands.remove(command)
 
 # There's probably a better way to do this, but this works on MacOS
 DEBUG_MACHINE = False
