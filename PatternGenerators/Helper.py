@@ -33,3 +33,6 @@ def instruction_for_ranges(range_mappings, speed="Speed"):
 
 def instruction_for_pixel(position, color="Color", speed="Speed"):
 	return instruction_for_ranges({(position,position+1): color}, speed)
+
+def color_string_for_color(color):
+	return "(%s,%s,%s)" % (str(color[0]),str(color[1]),str(color[2]))
