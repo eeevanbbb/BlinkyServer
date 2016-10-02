@@ -9,8 +9,8 @@ BEAUTY_GRANULARITY = 50.0
 
 def generate_pattern():
 	output = ""
-	for offset in range(0,1000):
-		range_mappings = {} #something weird here...
+	for offset in range(0,60*60*5):
+		range_mappings = {}
 		for i in range(0,150):
 			color = [int(((math.sin((i + (BEAUTY_STEP * n) + offset) / BEAUTY_GRANULARITY) + 1) / 2) * 255) for n in range(0,3)]
 			range_mappings[(i,i+1)] = Helper.color_string_for_color(color)
