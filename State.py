@@ -9,6 +9,7 @@ bpm = 120
 command = "None"
 
 running_loop = ""
+blinky_lock = False
 
 available_commands = map((lambda x: x.replace(".txt","")), listdir("Patterns"))
 for command in available_commands:

@@ -56,6 +56,8 @@ def start_dynamic_color(shouldStart):
 
 def blinky_loop(instructions, name):
 	while True:
+		while State.blinky_lock:
+			pass
 		for instruction in instructions:
 			execute_instruction(instruction)
 			if State.running_loop != name:
@@ -66,11 +68,13 @@ def execute_instruction(instruction):
 	ranges = parse_ranges(fields[0])
 	speed = parse_speed(fields[1])
 	for range_triple in ranges:
+		State.blinky_lock = True
 		for i in range(range_triple[0], range_triple[1]):
 			if not State.is_debug_machine():
 				blinky_tape.sendPixel(range_triple[2][0], range_triple[2][1], range_triple[2][2])
 	if not State.is_debug_machine():
 		blinky_tape.show()
+	State.blinky_lock = False
 	time.sleep(1.0 / speed)
 
 
