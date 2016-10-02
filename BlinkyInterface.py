@@ -7,6 +7,7 @@ import time
 from BlinkyTape import BlinkyTape
 import State
 import RandomGenerator
+import DynamicColor
 
 blinky_tape = None
 if not State.is_debug_machine():
@@ -46,6 +47,12 @@ def start_with_instructions(instructions, name):
 	thread = threading.Thread(target=blinky_loop, args=(instructions, name, ))
 	thread.daemon = True
 	thread.start()
+
+def start_dynamic_color(shouldStart):
+	if shouldStart:
+		thread = threading.Thread(target=DynamicColor.start_dynamic_color, args=())
+		thread.daemon = True
+		thread.start()
 
 def blinky_loop(instructions, name):
 	for instruction in instructions:

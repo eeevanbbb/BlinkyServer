@@ -41,6 +41,7 @@ def process_route_with_data(route, data):
 			new_dyna_color = data["dynamic_color"]
 			if validate_dynamic_color(new_dyna_color):
 				success = State.set_dyna_color(new_dyna_color) and success
+				BlinkyInterface.start_dynamic_color(new_dyna_color)
 	elif route == "/stop":
 		BlinkyInterface.start_command("Stop")
 		success = True
