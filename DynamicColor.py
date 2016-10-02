@@ -17,12 +17,12 @@ def start_dynamic_color():
 
 			while transition_time > 0:
 				if State.get_dyna_color():
-					transition_time -= 1 / State.get_speed()
+					transition_time -= 1.0 / State.get_speed()
 
 					color = [int(color[i] + color_delta[i]) for i in range(0,3)]
 					State.set_color(color)
 
-					time.sleep(1 / State.get_speed())
+					time.sleep(1.0 / State.get_speed())
 				else:
 					return
 		else:
