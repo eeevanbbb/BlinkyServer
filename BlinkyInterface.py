@@ -55,13 +55,11 @@ def start_dynamic_color(shouldStart):
 		thread.start()
 
 def blinky_loop(instructions, name):
-	for instruction in instructions:
-		execute_instruction(instruction)
-		if State.running_loop != name:
-			return
-
-	if State.running_loop == name:
-		blinky_loop(instructions, name)
+	while True:
+		for instruction in instructions:
+			execute_instruction(instruction)
+			if State.running_loop != name:
+				return
 
 def execute_instruction(instruction):
 	fields = parse_fields(instruction)
