@@ -37,6 +37,9 @@ def start_command(command):
 		clear()
 	elif command == "Random":
 		random()
+	elif State.is_dynamic_command(command):
+		command_class = State.class_for_dynamic_command(command)
+		start_with_command_class(command_class, command)
 	else:
 		with open("Patterns/%s.txt" % command, 'r') as instruction_file:
 			instructions = instruction_file.readlines()
@@ -45,6 +48,12 @@ def start_command(command):
 def start_with_instructions(instructions, name):
 	State.running_loop = name
 	thread = threading.Thread(target=blinky_loop, args=(instructions, name, ))
+	thread.daemon = True
+	thread.start()
+
+def start_with_command_class(command_class, name):
+	State.running_loop = name
+	thread = threading.Thread(target=dynamic_command_loop, args=(command_class, name, ))
 	thread.daemon = True
 	thread.start()
 
@@ -76,6 +85,26 @@ def execute_instruction(instruction):
 		blinky_tape.show()
 	State.blinky_lock = False
 	time.sleep(1.0 / speed)
+
+def dynamic_command_loop(command_class, name):
+	while True:
+		while State.blinky_lock:
+			pass
+		show_dynamic_frame(command_class)
+		if State.running_loop != name:
+			return
+
+def show_dynamic_frame(command_class):
+	blinky_frame = command_class.get_frame(State.get_color()) # A list of exactly 150 colors
+	State.blinky_lock = True
+	for color in blinky_frame:
+		if not State.is_debug_machine():
+			blinky_tape.sendPixel(color[0], color[1], color[2])
+	if not State.is_debug_machine():
+		blinky_tape.show()
+	print "Showing Dynamic Frame"
+	State.blinky_lock = False
+	time.sleep(command_class.get_sleep_time(State.get_speed()))
 
 
 

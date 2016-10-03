@@ -2,6 +2,8 @@
 
 from os import listdir
 
+import DynamicPatternRegistry
+
 color = [0,0,255]
 speed = 1.0
 dyna_color = False
@@ -30,7 +32,7 @@ special_commands = ["Random"]
 # Getters
 
 def get_available_commands():
-	return available_commands + special_commands
+	return available_commands + special_commands + get_dynamic_commands()
 
 def get_command():
  	return command
@@ -49,6 +51,18 @@ def get_bpm():
 
 def get_dyna_color():
 	return dyna_color
+
+def get_special_commands():
+	return special_commands
+
+def get_dynamic_commands():
+	return DynamicPatternRegistry.get_dynamic_pattern_names()
+
+def is_dynamic_command(command):
+	return command in get_dynamic_commands()
+
+def class_for_dynamic_command(command):
+	return DynamicPatternRegistry.dynamic_pattern_class_for_name(command)
 
 
 # Setters

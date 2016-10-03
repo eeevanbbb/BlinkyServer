@@ -54,7 +54,7 @@ def process_route_with_data(route, data):
 	return success
 
 def validate_command(command):
-	return command in State.special_commands or command in State.get_available_commands()
+	return command in State.get_special_commands() or command in State.get_available_commands() or command in State.get_dynamic_commands()
 
 def validate_color(color):
 	if len(color) != 3:
