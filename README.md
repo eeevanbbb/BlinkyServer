@@ -40,15 +40,15 @@ Some patterns are special, and must be handled separately. For instance, the "Ra
 
 ### GET
 
-- / (HTML)
-- /state (JSON)
-- /commands (JSON)
+- `/` (HTML)
+- `/state` (JSON)
+- `/commands` (JSON)
 
 ### POST
 
-- /update (JSON)
-- /stop
-- /clear
+- `/update` (JSON)
+- `/stop`
+- `/clear`
 
 The `/update` route supports the following parameters in the JSON body:
 
@@ -57,3 +57,7 @@ The `/update` route supports the following parameters in the JSON body:
 - `speed` - A floating point value from 0-60.
 - `bpm` - An integer value from 0-200.
 - `dynamic_color` - A boolean that will tell the system to start or stop dynamically changing the current color.
+
+## Development
+
+This project is still under active development!
