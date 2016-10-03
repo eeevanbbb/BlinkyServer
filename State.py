@@ -32,7 +32,7 @@ special_commands = ["Random"]
 # Getters
 
 def get_available_commands():
-	return available_commands + special_commands + get_dynamic_commands()
+	return sorted(available_commands + special_commands + get_dynamic_commands())
 
 def get_command():
  	return command
