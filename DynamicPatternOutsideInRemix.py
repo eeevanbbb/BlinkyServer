@@ -20,23 +20,23 @@ class OutsideInRemix(object):
 	def get_frame(self, color):
 		self.color = color
 		colors = []
-		for i in range(0,150):
-			if i < 75:
-				for x in range(0, i + 1):
-					colors.append(self.color_pixel_for_offset(i - x))
-				for x in range(i + 1,149 - i):
-					colors.append([0,0,0])
-				for x in range(149 - i, 150):
-					colors.append(self.color_pixel_for_offset(x - (149 - i)))
-			else:
-				for x in range(0, i - 75 + 1):
-					colors.append([0,0,0])
-				for x in range(i - 75 + 1, 75):
-					colors.append(self.color_pixel_for_offset(74 - (x - (i - 75 + 1))))
-				for x in range(75, 149 - (i - 75)):
-					colors.append(self.color_pixel_for_offset(74 - ((149 - (i - 75)) - 1 - x)))
-				for x in range(149 - (i - 75), 150):
-					colors.append([0,0,0])
+		if self.i < 75:
+			for x in range(0, self.i + 1):
+				colors.append(self.color_pixel_for_offset(self.i - x))
+			for x in range(self.i + 1,149 - self.i):
+				colors.append([0,0,0])
+			for x in range(149 - self.i, 150):
+				colors.append(self.color_pixel_for_offset(x - (149 - self.i)))
+		else:
+			for x in range(0, self.i - 75 + 1):
+				colors.append([0,0,0])
+			for x in range(self.i - 75 + 1, 75):
+				colors.append(self.color_pixel_for_offset(74 - (x - (self.i - 75 + 1))))
+			for x in range(75, 149 - (self.i - 75)):
+				colors.append(self.color_pixel_for_offset(74 - ((149 - (self.i - 75)) - 1 - x)))
+			for x in range(149 - (self.i - 75), 150):
+				colors.append([0,0,0])
+		self.i = (self.i + 1) % 150
 		return colors
 
 	def get_sleep_time(self, speed):
