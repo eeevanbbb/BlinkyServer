@@ -102,7 +102,6 @@ def show_dynamic_frame(command_class):
 			blinky_tape.sendPixel(color[0], color[1], color[2])
 	if not State.is_debug_machine():
 		blinky_tape.show()
-	print "Showing Dynamic Frame"
 	State.blinky_lock = False
 	time.sleep(command_class.get_sleep_time(State.get_speed()))
 
