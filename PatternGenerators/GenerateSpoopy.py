@@ -5,7 +5,7 @@ import Helper
 def generate_pattern():
 	length = 10
 	output = ""
-	colors = [(255,165,0), (0,0,0)]
+	colors = [(255,80,0), (0,0,0)]
 	range_mapping = {}
 	for i in range(0,150 / length):
 		range_mapping[(i*length,i*length+length)] = colors[i % 2]
