@@ -36,3 +36,12 @@ def instruction_for_pixel(position, color="Color", speed="Speed"):
 
 def color_string_for_color(color):
 	return "(%s,%s,%s)" % (str(color[0]),str(color[1]),str(color[2]))
+
+def instruction_for_pixels(positions, colors=[], speed="Speed"):
+	if len(colors) == 0:
+		colors = ["Color" for i in range(0,len(positions))]
+	range_mappings = {}
+	for i in range(0,positions):
+		position = positions[i]
+		range_mappings[range(position,position+1)] = colors[i]
+	return instruction_for_ranges(range_mappings, speed)
