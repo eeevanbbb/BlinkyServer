@@ -9,6 +9,7 @@ speed = 1.0
 dyna_color = False
 bpm = 120
 command = "None"
+pattern_parameters = {}
 
 running_loop = ""
 blinky_lock = False
@@ -64,6 +65,9 @@ def is_dynamic_command(command):
 def class_for_dynamic_command(command):
 	return DynamicPatternRegistry.dynamic_pattern_class_for_name(command)
 
+def get_pattern_parameters():
+	return pattern_parameters
+
 
 # Setters
 
@@ -90,4 +94,9 @@ def set_bpm(new_bpm):
 def set_dyna_color(new_dyna_color):
 	global dyna_color
 	dyna_color = new_dyna_color
+	return True
+
+def set_pattern_parameters(new_pattern_parameters):
+	global pattern_parameters
+	pattern_parameters = new_pattern_parameters
 	return True

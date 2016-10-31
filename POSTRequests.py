@@ -42,6 +42,10 @@ def process_route_with_data(route, data):
 			if validate_dynamic_color(new_dyna_color):
 				success = State.set_dyna_color(new_dyna_color) and success
 				BlinkyInterface.start_dynamic_color(new_dyna_color)
+		if "pattern_parameters" in data:
+			new_pattern_parameters = data["pattern_parameters"]
+			if validate_pattern_parameters(new_pattern_parameters):
+				success = State.set_pattern_parameters(new_pattern_parameters) and success
 	elif route == "/stop":
 		BlinkyInterface.start_command("Stop")
 		success = True
@@ -72,3 +76,6 @@ def validate_bpm(bpm):
 
 def validate_dynamic_color(dyna_color):
 	return type(dyna_color) == type(True)
+
+def validate_pattern_parameters(pattern_parameters):
+	return isinstance(pattern_parameters, dict)
