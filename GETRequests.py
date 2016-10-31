@@ -76,7 +76,8 @@ def state_json():
 			 'color': State.get_color(),
 			 'speed': State.get_speed(),
 			 'bpm': State.get_bpm(),
-			 'dyna_color': State.get_dyna_color()}
+			 'dyna_color': State.get_dyna_color(),
+			 'pattern_parameters': State.get_pattern_parameters()}
 	return simplejson.dumps(state)
 
 def commands_json():
