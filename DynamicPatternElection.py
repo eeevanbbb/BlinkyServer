@@ -22,6 +22,12 @@ class Election():
 			blue_end = int(params["Blue"])
 		if "Red" in params:
 			red_begin = 150 - int(params["Red"])
+		if blue_end > 150:
+			blue_end = 150
+		if red_begin > 150:
+			red_begin = 150
+		if blue_end > red_begin:
+			red_begin = blue_end
 		for i in range(0,blue_end):
 			colors.append([0,0,255])
 		for i in range(blue_end, red_begin):
