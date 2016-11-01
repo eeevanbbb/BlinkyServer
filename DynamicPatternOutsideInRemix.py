@@ -4,7 +4,7 @@
 # and get_name(), which should return a String.
 # Dynamic patterns should manage their own state.
 
-class OutsideInRemix(object):
+class OutsideInRemix():
 
 	def __init__(self):
 		self.name = "OutsideInRemix"

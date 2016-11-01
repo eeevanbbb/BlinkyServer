@@ -9,7 +9,7 @@ speed = 1.0
 dyna_color = False
 bpm = 120
 command = "None"
-pattern_parameters = {}
+pattern_parameters = {} # String: String
 
 running_loop = ""
 blinky_lock = False
