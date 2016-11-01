@@ -18,8 +18,10 @@ class Election():
 		params = State.get_pattern_parameters()
 		blue_end = 0
 		red_begin = 150
-		blue_end = int(params["Blue"])
-		red_begin = 150 - int(params["Red"])
+		if "Blue" in params:
+			blue_end = int(params["Blue"])
+		if "Red" in params:
+			red_begin = 150 - int(params["Red"])
 		for i in range(0,blue_end):
 			colors.append([0,0,255])
 		for i in range(blue_end, red_begin):
