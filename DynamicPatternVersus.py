@@ -5,6 +5,7 @@
 # Dynamic patterns should manage their own state.
 
 import State
+import Utilities
 
 class Versus():
 	def __init__(self):
