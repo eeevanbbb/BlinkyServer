@@ -20,14 +20,14 @@ class Versus():
 		team2begin = 150
 		color1 = [255,0,0]
 		color2 = [0,0,255]
-		if "Team1Color" in params:
-			color1 = params["Team1Color"]
-		if "Team2Color" in params:
-			color2 = params["Team2Color"]
+		# if "Team1Color" in params:
+		# 	color1 = params["Team1Color"]
+		# if "Team2Color" in params:
+		# 	color2 = params["Team2Color"]
 		if "Team1" in params:
-			team1end = params["Team1"]
+			team1end = int(params["Team1"])
 		if "Team2" in params:
-			team2begin = 150 - params["Team2"]
+			team2begin = 150 - int(params["Team2"])
 		if team1end > 150:
 			team1end = 150
 		if team2begin > 150:
