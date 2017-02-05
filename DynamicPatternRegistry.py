@@ -6,8 +6,9 @@
 
 import DynamicPatternOutsideInRemix
 import DynamicPatternElection
+import DynamicPatternVersus
 
-dynamic_pattern_classes = [DynamicPatternOutsideInRemix.OutsideInRemix(), DynamicPatternElection.Election()]
+dynamic_pattern_classes = [DynamicPatternOutsideInRemix.OutsideInRemix(), DynamicPatternElection.Election(), DynamicPatternVersus.Versus()]
 
 
 # Do not modify
