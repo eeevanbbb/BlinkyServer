@@ -34,7 +34,7 @@ class Versus():
 			team2begin = 150
 		if team1end > team2begin:
 			team2begin = team1end
-		for i in range(0,blue_end):
+		for i in range(0, team1end):
 			colors.append(color1)
 		for i in range(team1end, team2begin):
 			colors.append([0,0,0])
