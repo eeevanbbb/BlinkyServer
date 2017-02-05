@@ -5,7 +5,7 @@
 # Dynamic patterns should manage their own state.
 
 import State
-import Utilities
+from Utilities import color_from_string
 
 class Versus():
 	def __init__(self):
