@@ -10,9 +10,9 @@
 
 		<div style="width: 50%; float: left;">
 			<h2>Commands</h2>
-			{{#each commands}}
-				<input class="command_button" type="radio" name="command" value={{this}} onclick="handleClick(this);"{{#ifEqual currentCommand}} checked{{/ifEqual}}>{{this}}<br>
-			{{/each}}
+			{% for command in commands %}
+				<input class="command_button" type="radio" name="command" value={{ command }} onclick="handleClick(this);"{% if currentCommand == command %} checked {% endif %}>{{ command }}<br>
+			{% endfor %}
 		</div>
 
 		<div style="width: 50%; float: left;">
@@ -23,13 +23,13 @@
 
 		<div style="width: 50%; float: right;">
 			<h1>Dynamic Color</h1>
-			<input id="dyna_off" type="radio" name="dyna" value="false" onclick="handleDyna(this);"{{#ifNot dyna_color}} checked{{/ifNot}}>Off<br>
-			<input id="dyna_on" type="radio" name="dyna" value="true" onclick="handleDyna(this);"{{#if dyna_color}} checked{{/if}}>On<br>
+			<input id="dyna_off" type="radio" name="dyna" value="false" onclick="handleDyna(this);"{% if dyna_color == false %} checked{% endif %}>Off<br>
+			<input id="dyna_on" type="radio" name="dyna" value="true" onclick="handleDyna(this);"{% if dyna_color == true %} checked{% endif %}>On<br>
 		</div>
 
 		<div style="width: 50%; float: right;">
 			<h1>Speed</h1>
-			<input id="speed_input" type="text" name="speed" value={{speed}}>
+			<input id="speed_input" type="text" name="speed" value={{ speed }}>
 			<button type="button" onclick="setSpeed()">Send</button>
 		</div>
 
@@ -81,26 +81,39 @@
 		}
 
 		//http://stackoverflow.com/questions/24468459/sending-a-json-to-server-and-retrieving-a-json-in-return-without-jquery
-		function sendRequest(route, data) {
+		function sendRequest(route, data, completion) {
 			xhr = new XMLHttpRequest();
 			xhr.open("POST", route, true);
+			xhr.onreadystatechange=function() {
+				if (xhr.readyState == 4) {
+					var jsonResponse = JSON.parse(xhr.responseText);
+					if (completion && jsonResponse) {
+						completion(jsonResponse["success"]);
+					}
+				}
+			}
 			xhr.setRequestHeader("Content-type", "application/json");
 			xhr.send(JSON.stringify(data));
 		}
 
 		function sendUpdate(data) {
 			var route = "/update";
-			sendRequest(route, data);
+			sendRequest(route, data, null);
 		}	
 
 		function sendStop() {
 			var route = "/stop";
-			sendRequest(route, {});
+			sendRequest(route, {}, null);
 		}	
 
 		function sendClear() {
 			var route = "/clear";
-			sendRequest(route, {});
+			sendRequest(route, {}, function(success) {
+				var buttons = document.getElementsByClassName("command_button");
+				Array.prototype.forEach.call(buttons, function(button) {
+					button.checked = false;
+				});
+			});
 		}
 		</script>
 	</body>

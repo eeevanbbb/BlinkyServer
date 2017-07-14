@@ -52,7 +52,7 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 			success = POSTRequests.process_route_with_data(s.path, post_data)			
 
 			send_json_headers(s)
-			s.wfile.write("{ success: \"%s\" }" % str(success))
+			s.wfile.write('{ "success": "%s" }' % str(success))
 		else:
 			send_failure_headers(s)
 			s.wfile.write(POSTRequests.invalid_request(s.path))
