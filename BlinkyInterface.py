@@ -18,12 +18,16 @@ def stop():
 
 def clear():
 	State.running_loop = ""
+	while State.blinky_lock:
+		pass
+	State.blinky_lock = True
 	for i in range(0,150):
 		if not State.is_debug_machine():
 			blinky_tape.sendPixel(0,0,0)
 	print "Clearing"
 	if not State.is_debug_machine():
 		blinky_tape.show()
+	State.blinky_lock = False
 
 def random():
 	RandomGenerator.new_random_pattern(1000)
@@ -76,8 +80,8 @@ def execute_instruction(instruction):
 	fields = parse_fields(instruction)
 	ranges = parse_ranges(fields[0])
 	speed = parse_speed(fields[1])
+	State.blinky_lock = True
 	for range_triple in ranges:
-		State.blinky_lock = True
 		for i in range(range_triple[0], range_triple[1]):
 			if not State.is_debug_machine():
 				blinky_tape.sendPixel(range_triple[2][0], range_triple[2][1], range_triple[2][2])
