@@ -8,12 +8,6 @@ from Utilities import log_debug
 import GETRequests
 import POSTRequests
 
-HOST_NAME = '192.168.0.138'
-PORT_NUMBER = 9001
-
-if State.is_debug_machine():
-	HOST_NAME = 'localhost'
-
 def send_html_headers(s):
 	s.send_response(200)
 	s.send_header("Content-type","text/html")
@@ -57,14 +51,30 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 			send_failure_headers(s)
 			s.wfile.write(POSTRequests.invalid_request(s.path))
 
+def read_network_info():
+	host = "localhost" # default
+	port = 9001 # default
+	with open('NetworkInfo.txt') as netInfo:
+		lines = netInfo.readlines()
+		for line in lines:
+			comps = line.rstrip().split('=')
+			if len(comps) != 2:
+				print("Error in NetworkInfo.txt: %s" % line)
+			else:
+				if comps[0] == "HOST_NAME":
+					host = comps[1]
+				elif comps[0] == "PORT_NUMBER":
+					port = int(comps[1])
+	return (host, port)
 
 def start_server():
+	netinfo = read_network_info()
 	server_class = BaseHTTPServer.HTTPServer
-	httpd = server_class((HOST_NAME, PORT_NUMBER), RequestHandler)
-	log_debug("Server started on %s:%s" % (HOST_NAME, PORT_NUMBER))
+	httpd = server_class(netinfo, RequestHandler)
+	log_debug("Server started on %s:%s" % netinfo)
 	try:
 		httpd.serve_forever()
 	except KeyboardInterrupt:
 		pass
 	httpd.server_close()
-	log_debug("Server stopped on %s:%s" % (HOST_NAME, PORT_NUMBER))
+	log_debug("Server stopped on %s:%s" % netinfo)
