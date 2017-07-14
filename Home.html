@@ -29,19 +29,17 @@
 
 		<div style="width: 50%; float: right;">
 			<h1>Speed</h1>
-			<input id="speed_input" type="text" name="speed" value={{ speed }}>
-			<button type="button" onclick="setSpeed()">Send</button>
+			<input id="speed_input" type="text" name="speed" value={{ speed }} oninput="setSpeed()">
 		</div>
 
 		<div style="width: 50%; float: right;">
 			<h1>Color</h1>
 			<p>Red: </p>
-			<input id="red_input" type="text" name="color" value={{ red }}><br>
+			<input id="red_input" type="text" name="color" value={{ red }} oninput="setColor()"><br>
 			<p>Green: </p>
-			<input id="green_input" type="text" name="color" value={{ green }}><br>
+			<input id="green_input" type="text" name="color" value={{ green }} oninput="setColor()"><br>
 			<p>Blue: </p>
-			<input id="blue_input" type="text" name="color" value={{ blue }}><br>
-			<button type="button" onclick="setColor()">Send</button>
+			<input id="blue_input" type="text" name="color" value={{ blue }} oninput="setColor()"><br>
 		</div>
 
 		<script>
@@ -76,45 +74,85 @@
 			sendUpdate({"dynamic_color": boolValue});
 		}
 
-		function stop() {
-
-		}
-
-		//http://stackoverflow.com/questions/24468459/sending-a-json-to-server-and-retrieving-a-json-in-return-without-jquery
-		function sendRequest(route, data, completion) {
-			xhr = new XMLHttpRequest();
-			xhr.open("POST", route, true);
-			xhr.onreadystatechange=function() {
-				if (xhr.readyState == 4) {
-					var jsonResponse = JSON.parse(xhr.responseText);
-					if (completion && jsonResponse) {
-						completion(jsonResponse["success"]);
-					}
-				}
-			}
-			xhr.setRequestHeader("Content-type", "application/json");
-			xhr.send(JSON.stringify(data));
-		}
-
 		function sendUpdate(data) {
 			var route = "/update";
-			sendRequest(route, data, null);
+			sendPOSTRequest(route, data, null);
 		}	
 
 		function sendStop() {
 			var route = "/stop";
-			sendRequest(route, {}, null);
+			sendPOSTRequest(route, {}, null);
 		}	
 
 		function sendClear() {
 			var route = "/clear";
-			sendRequest(route, {}, function(success) {
+			sendPOSTRequest(route, {}, function(success) {
 				var buttons = document.getElementsByClassName("command_button");
 				Array.prototype.forEach.call(buttons, function(button) {
 					button.checked = false;
 				});
 			});
 		}
+
+		function updateState() {
+			sendGETRequest("/state", function(state) {
+				if (state) {
+					document.getElementById("red_input").value = state.color[0];
+					document.getElementById("green_input").value = state.color[1];
+					document.getElementById("blue_input").value = state.color[2];
+					document.getElementById("dyna_on").checked = state.dyna_color;
+					document.getElementById("dyna_off").checked = !state.dyna_color;
+					document.getElementById("speed_input").value = state.speed;
+
+					var command_buttons = document.getElementsByClassName("command_button");
+					Array.prototype.forEach.call(command_buttons, function(button) {
+						if (button.value == state.command) {
+							button.checked = true;
+						} else {
+							button.checked = false;
+						}
+					});
+				}			
+			});
+		}
+
+		window.setInterval(updateState, 2000);
+
+
+		// Network Requests
+
+		//http://stackoverflow.com/questions/24468459/sending-a-json-to-server-and-retrieving-a-json-in-return-without-jquery
+		function sendRequest(type, route, data, completion) {
+			xhr = new XMLHttpRequest();
+			xhr.open(type, route, true);
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4) {
+					var jsonResponse = JSON.parse(xhr.responseText);
+					if (completion && jsonResponse) {
+						completion(jsonResponse);
+					}
+				}
+			}
+			if (type == "POST") {
+				xhr.setRequestHeader("Content-type", "application/json");
+				xhr.send(JSON.stringify(data));
+			} else {
+				xhr.send();
+			}
+		}
+
+		function sendPOSTRequest(route, data, completion) {
+			sendRequest("POST", route, data, function(json) {
+				if (completion) {
+					completion(json["success"]);
+				}
+			});
+		}
+
+		function sendGETRequest(route, completion) {
+			sendRequest("GET", route, null, completion);
+		}
+
 		</script>
 	</body>
 </html>
