@@ -1,10 +1,23 @@
 <html>
 	<head>
-		<title>LET'S BLINK THIS SHIT</title>
+		<meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+		<title>Blinky Controller</title>
+
+		<!-- Bootstrap core CSS -->
+    	<link href="./site/dist/css/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Bootstrap theme -->
+    	<link href="./site/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+		<!-- Bootstrap toggle -->
+    	<link href="./dist/css/bootstrap-toggle.min.css" rel="stylesheet">
 	</head>
 	<body>
-		<h1 align="center">Welcome to BlinkyTape!</h1>
-		<h3 align="center">Let's control some mother fucking lights.</h3>
+		<h1 align="center">Welcome to Blinky Controller!</h1>
 
 		<br>
 
@@ -17,8 +30,8 @@
 
 		<div style="width: 50%; float: left;">
 			<h2>Controls</h2>
-			<button type="button" onclick="sendStop()">Stop</button>
-			<button type="button" onclick="sendClear()">Clear</button>
+			<button class="btn btn-lg btn-default" type="button" onclick="sendClear()">Clear</button>
+			<button class="btn btn-lg btn-default" type="button" onclick="sendStop()">Stop</button>
 		</div>
 
 		<div style="width: 50%; float: right;">
@@ -154,5 +167,13 @@
 		}
 
 		</script>
+
+		 <!-- Bootstrap core JavaScript
+	    ================================================== -->
+	    <!-- Placed at the end of the document so the pages load faster -->
+	    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+	    <script>window.jQuery || document.write('<script src="./site/assets/js/vendor/jquery.min.js"><\/script>')</script>
+	    <script src="./site/dist/js/bootstrap.min.js"></script>
+	    <script src="./dist/js/bootstrap-toggle.min.js"></script>
 	</body>
 </html>

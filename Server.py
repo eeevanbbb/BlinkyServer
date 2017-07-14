@@ -1,12 +1,14 @@
 # This file handles routing and serving requests made to the application.
 
 import BaseHTTPServer
+import SimpleHTTPServer
 import json
 import State
 
 from Utilities import log_debug
 import GETRequests
 import POSTRequests
+from os import curdir, sep
 
 def send_html_headers(s):
 	s.send_response(200)
@@ -18,17 +20,30 @@ def send_json_headers(s):
 	s.send_header("Content-type","application/json")
 	s.end_headers()
 
+def send_headers_for_file_in_path(s):
+	s.send_response(200)
+	s.send_header('Content-type', s.guess_type(s.path))
+	s.end_headers()
+
 def send_failure_headers(s):
 	s.send_response(404)
 	s.send_header("Content-type","text/html")
 	s.end_headers()
 
-class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 	def do_HEAD(s):
 		send_html_headers(s)
 
 	def do_GET(s):
-		if GETRequests.is_valid_route(s.path):
+		if s.path.startswith('/site'):
+			try:
+				f = open(curdir + sep + s.path)
+				send_headers_for_file_in_path(s)
+				s.wfile.write(f.read())
+				f.close()
+			except IOError:
+				s.send_error(404, 'File Not Found: %s' % s.path)
+		elif GETRequests.is_valid_route(s.path):
 			if GETRequests.is_json_route(s.path):
 				send_json_headers(s)
 			else:
