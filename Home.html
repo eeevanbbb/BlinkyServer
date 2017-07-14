@@ -14,52 +14,71 @@
     	<link href="./site/dist/css/bootstrap-theme.min.css" rel="stylesheet">
 
 		<!-- Bootstrap toggle -->
-    	<link href="./dist/css/bootstrap-toggle.min.css" rel="stylesheet">
+    	<link href="./site/dist/css/bootstrap-toggle.min.css" rel="stylesheet">
 	</head>
 	<body>
+		<br>
+
 		<h1 align="center">Welcome to Blinky Controller!</h1>
 
 		<br>
 
-		<div style="width: 50%; float: left;">
-			<h2>Commands</h2>
-			{% for command in commands %}
-				<input class="command_button" type="radio" name="command" value={{ command }} onclick="handleClick(this);"{% if currentCommand == command %} checked {% endif %}>{{ command }}<br>
-			{% endfor %}
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<h2>Pattern</h2>
+					<div class="dropdown">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="commandDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						{{ currentCommand }}
+						</button>
+						<div class="dropdown-menu" aria-labelledby="commandDropdown">
+						{% for command in commands %}
+						<button class="dropdown-item" type="button" value={{ command }} onclick="commandSelected(this);">{{ command }}</button>
+						{% endfor %}
+						</div>
+					</div>
+				</div>
+
+				<div class="col">
+					<h2>Controls</h2>
+					<button class="btn btn-lg btn-default" type="button" onclick="sendClear()">Clear</button>
+					<button class="btn btn-lg btn-default" type="button" onclick="sendStop()">Freeze</button>
+
+					<br><br>
+
+					<h2>Dynamic Color</h2>
+					<input id="dyna_toggle" type="checkbox" data-toggle="toggle" onchange="handleDyna(this);"{% if dyna_color == true %} checked{% endif %}>
+				</div>
+
+				<div class="col">
+					<h2>Speed</h2>
+					<input id="speed_input" type="text" name="speed" value={{ speed }} oninput="setSpeed()">
+
+					<br><br>
+
+					<h2>Color</h2>
+					<p>Red: </p>
+					<input id="red_input" type="text" name="color" value={{ red }} oninput="setColor()"><br>
+					<p>Green: </p>
+					<input id="green_input" type="text" name="color" value={{ green }} oninput="setColor()"><br>
+					<p>Blue: </p>
+					<input id="blue_input" type="text" name="color" value={{ blue }} oninput="setColor()"><br>
+				</div>
+			</div>
 		</div>
 
-		<div style="width: 50%; float: left;">
-			<h2>Controls</h2>
-			<button class="btn btn-lg btn-default" type="button" onclick="sendClear()">Clear</button>
-			<button class="btn btn-lg btn-default" type="button" onclick="sendStop()">Freeze</button>
-		</div>
 
-		<div style="width: 50%; float: right;">
-			<h1>Dynamic Color</h1>
-			<input id="dyna_off" type="radio" name="dyna" value="false" onclick="handleDyna(this);"{% if dyna_color == false %} checked{% endif %}>Off<br>
-			<input id="dyna_on" type="radio" name="dyna" value="true" onclick="handleDyna(this);"{% if dyna_color == true %} checked{% endif %}>On<br>
-		</div>
 
-		<div style="width: 50%; float: right;">
-			<h1>Speed</h1>
-			<input id="speed_input" type="text" name="speed" value={{ speed }} oninput="setSpeed()">
-		</div>
 
-		<div style="width: 50%; float: right;">
-			<h1>Color</h1>
-			<p>Red: </p>
-			<input id="red_input" type="text" name="color" value={{ red }} oninput="setColor()"><br>
-			<p>Green: </p>
-			<input id="green_input" type="text" name="color" value={{ green }} oninput="setColor()"><br>
-			<p>Blue: </p>
-			<input id="blue_input" type="text" name="color" value={{ blue }} oninput="setColor()"><br>
-		</div>
 
 		<script>
-		function handleClick(radioButton) {
-			var command = radioButton.value;
+		function commandSelected(button) {
+			var command = button.value;
 			console.log("Selected: " + command);
 			sendUpdate({"command": command});
+
+			// Optimistically update
+			document.getElementById("commandDropdown").innerHTML = command;
 		}
 
 		function setSpeed() {
@@ -77,14 +96,8 @@
 			sendUpdate({"color": color});
 		}
 
-		function handleDyna(radioButton) {
-			var value = radioButton.value;
-			console.log("DynaColor: " + value);
-			var boolValue = true;
-			if (value == "false") {
-				boolValue = false;
-			}
-			sendUpdate({"dynamic_color": boolValue});
+		function handleDyna(checkbox) {
+			sendUpdate({"dynamic_color": checkbox.checked});
 		}
 
 		function sendUpdate(data) {
@@ -105,6 +118,9 @@
 					button.checked = false;
 				});
 			});
+
+			// Optimistically update
+			document.getElementById("commandDropdown").innerHTML = "None";
 		}
 
 		function updateState() {
@@ -113,18 +129,10 @@
 					document.getElementById("red_input").value = state.color[0];
 					document.getElementById("green_input").value = state.color[1];
 					document.getElementById("blue_input").value = state.color[2];
-					document.getElementById("dyna_on").checked = state.dyna_color;
-					document.getElementById("dyna_off").checked = !state.dyna_color;
+					document.getElementById("dyna_toggle").checked = state.dyna_color;
 					document.getElementById("speed_input").value = state.speed;
 
-					var command_buttons = document.getElementsByClassName("command_button");
-					Array.prototype.forEach.call(command_buttons, function(button) {
-						if (button.value == state.command) {
-							button.checked = true;
-						} else {
-							button.checked = false;
-						}
-					});
+					document.getElementById("commandDropdown").innerHTML = state.command;
 				}			
 			});
 		}
@@ -173,7 +181,8 @@
 	    <!-- Placed at the end of the document so the pages load faster -->
 	    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
 	    <script>window.jQuery || document.write('<script src="./site/assets/js/vendor/jquery.min.js"><\/script>')</script>
+	    <script src="./site/dist/js/tether.min.js"></script>
 	    <script src="./site/dist/js/bootstrap.min.js"></script>
-	    <script src="./dist/js/bootstrap-toggle.min.js"></script>
+	    <script src="./site/dist/js/bootstrap-toggle.min.js"></script>
 	</body>
 </html>
