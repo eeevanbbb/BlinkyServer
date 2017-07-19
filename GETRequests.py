@@ -2,6 +2,7 @@
 
 import simplejson
 from jinja2 import Template
+import os
 
 import State
 
@@ -39,7 +40,7 @@ def template_for_file(filename):
 	return Template(source)
 
 def home_page():
-	template = template_for_file('Home.html')
+	template = template_for_file(os.path.join(os.path.dirname(__file__), 'Home.html'))
 	return template.render(commands=State.get_available_commands(),
 							currentCommand=State.get_command(),
 							dyna_color=State.get_dyna_color(),
