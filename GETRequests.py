@@ -4,9 +4,11 @@ import simplejson
 from jinja2 import Template
 
 import State
+import POSTRequests
 
-valid_routes = ["/", "/state", "/commands"]
+# The commands route has been deprecated because it has been made redundant
 json_routes  = ["/state", "/commands"]
+valid_routes = json_routes + ["/"]
 
 # def _json_list()
 
@@ -54,9 +56,13 @@ def state_json():
 			 'speed': State.get_speed(),
 			 'bpm': State.get_bpm(),
 			 'dyna_color': State.get_dyna_color(),
-			 'pattern_parameters': State.get_pattern_parameters()}
+			 'pattern_parameters': State.get_pattern_parameters(),
+			 'commands': State.get_available_commands(),
+			 'min_speed': POSTRequests.MIN_SPEED,
+			 'max_speed': POSTRequests.MAX_SPEED}
 	return simplejson.dumps(state)
 
+# This route has been deprecated because it has been made redundant
 def commands_json():
 	commands = State.get_available_commands()
 	return simplejson.dumps(commands)

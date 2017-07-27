@@ -5,7 +5,10 @@ import BlinkyInterface
 
 valid_routes = ["/update","/stop","/clear"]
 
+MIN_SPEED = 0
 MAX_SPEED = 60
+
+MIN_BPM = 0
 MAX_BPM = 600
 
 def is_valid_route(route):
@@ -69,10 +72,10 @@ def validate_color(color):
 	return True
 
 def validate_speed(speed):
-	return speed >= 0 and speed <= MAX_SPEED
+	return speed >= MIN_SPEED and speed <= MAX_SPEED
 
 def validate_bpm(bpm):
-	return bpm >= 0 and bpm <= MAX_BPM
+	return bpm >= MIN_BPM and bpm <= MAX_BPM
 
 def validate_dynamic_color(dyna_color):
 	return type(dyna_color) == type(True)
