@@ -1,6 +1,6 @@
 # This file keeps the current state of the lights.
 
-from os import listdir
+import os
 
 import DynamicPatternRegistry
 
@@ -14,7 +14,7 @@ pattern_parameters = {} # String: String
 running_loop = ""
 blinky_lock = False
 
-available_commands = map((lambda x: x.replace(".txt","")), listdir("Patterns"))
+available_commands = map((lambda x: x.replace(".txt","")), os.listdir(os.path.join(os.path.dirname(__file__), 'Patterns')))
 for command in available_commands:
 	if command[0] == "_":
 		available_commands.remove(command)

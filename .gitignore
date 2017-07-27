@@ -1,1 +1,4 @@
 NetworkInfo.txt
+*.pyc
+*.out
+*.err

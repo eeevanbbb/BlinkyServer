@@ -4,11 +4,11 @@ import BaseHTTPServer
 import SimpleHTTPServer
 import json
 import State
+import os
 
 from Utilities import log_debug
 import GETRequests
 import POSTRequests
-from os import curdir, sep
 
 def send_html_headers(s):
 	s.send_response(200)
@@ -37,7 +37,7 @@ class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 	def do_GET(s):
 		if s.path.startswith('/site'):
 			try:
-				f = open(curdir + sep + s.path)
+				f = open(os.curdir + os.sep + s.path)
 				send_headers_for_file_in_path(s)
 				s.wfile.write(f.read())
 				f.close()
@@ -69,7 +69,7 @@ class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 def read_network_info():
 	host = "localhost" # default
 	port = 9001 # default
-	with open('NetworkInfo.txt') as netInfo:
+	with open(os.path.join(os.path.dirname(__file__), 'NetworkInfo.txt')) as netInfo:
 		lines = netInfo.readlines()
 		for line in lines:
 			comps = line.rstrip().split('=')
