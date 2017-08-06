@@ -56,13 +56,13 @@ class BlinkyInterface(object):
 
 	def start_with_instructions(self, instructions, name):
 		State.running_loop = name
-		thread = threading.Thread(target=blinky_loop, args=(instructions, name, ))
+		thread = threading.Thread(target=self.blinky_loop, args=(instructions, name, ))
 		thread.daemon = True
 		thread.start()
 
 	def start_with_command_class(self, command_class, name):
 		State.running_loop = name
-		thread = threading.Thread(target=dynamic_command_loop, args=(command_class, name, ))
+		thread = threading.Thread(target=self.dynamic_command_loop, args=(command_class, name, ))
 		thread.daemon = True
 		thread.start()
 

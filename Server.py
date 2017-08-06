@@ -60,7 +60,7 @@ class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 		if POSTRequests.is_valid_route(s.path):
 			raw_data = s.rfile.read(int(s.headers['Content-Length']))
 			post_data = json.loads(raw_data)
-			success = POSTRequests.process_route_with_data(s.path, post_data, self.blinky_interface)			
+			success = POSTRequests.process_route_with_data(s.path, post_data, s.blinky_interface)			
 
 			send_json_headers(s)
 			s.wfile.write('{ "success": "%s" }' % str(success))
