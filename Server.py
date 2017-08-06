@@ -31,6 +31,8 @@ def send_failure_headers(s):
 	s.end_headers()
 
 class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+	blinky_interface = None
+
 	def do_HEAD(s):
 		send_html_headers(s)
 
@@ -58,7 +60,7 @@ class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 		if POSTRequests.is_valid_route(s.path):
 			raw_data = s.rfile.read(int(s.headers['Content-Length']))
 			post_data = json.loads(raw_data)
-			success = POSTRequests.process_route_with_data(s.path, post_data)			
+			success = POSTRequests.process_route_with_data(s.path, post_data, self.blinky_interface)			
 
 			send_json_headers(s)
 			s.wfile.write('{ "success": "%s" }' % str(success))
@@ -66,30 +68,38 @@ class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 			send_failure_headers(s)
 			s.wfile.write(POSTRequests.invalid_request(s.path))
 
-def read_network_info():
-	host = "localhost" # default
-	port = 9001 # default
-	with open(os.path.join(os.path.dirname(__file__), 'NetworkInfo.txt')) as netInfo:
-		lines = netInfo.readlines()
-		for line in lines:
-			comps = line.rstrip().split('=')
-			if len(comps) != 2:
-				print("Error in NetworkInfo.txt: %s" % line)
-			else:
-				if comps[0] == "HOST_NAME":
-					host = comps[1]
-				elif comps[0] == "PORT_NUMBER":
-					port = int(comps[1])
-	return (host, port)
 
-def start_server():
-	netinfo = read_network_info()
-	server_class = BaseHTTPServer.HTTPServer
-	httpd = server_class(netinfo, RequestHandler)
-	log_debug("Server started on %s:%s" % netinfo)
-	try:
-		httpd.serve_forever()
-	except KeyboardInterrupt:
-		pass
-	httpd.server_close()
-	log_debug("Server stopped on %s:%s" % netinfo)
+class Server(BaseHTTPServer.HTTPServer):
+	def serve_forever(self, blinky_interface):
+		self.RequestHandlerClass.blinky_interface = blinky_interface
+		BaseHTTPServer.HTTPServer.serve_forever(self)
+
+
+class BlinkyServer(object):
+	def read_network_info(self):
+		host = "localhost" # default
+		port = 9001 # default
+		with open(os.path.join(os.path.dirname(__file__), 'NetworkInfo.txt')) as netInfo:
+			lines = netInfo.readlines()
+			for line in lines:
+				comps = line.rstrip().split('=')
+				if len(comps) != 2:
+					print("Error in NetworkInfo.txt: %s" % line)
+				else:
+					if comps[0] == "HOST_NAME":
+						host = comps[1]
+					elif comps[0] == "PORT_NUMBER":
+						port = int(comps[1])
+		return (host, port)
+
+	def start_server(self, blinky_interface):
+		netinfo = self.read_network_info()
+		server_class = Server
+		httpd = server_class(netinfo, RequestHandler)
+		log_debug("Server started on %s:%s" % netinfo)
+		try:
+			httpd.serve_forever(blinky_interface)
+		except KeyboardInterrupt:
+			pass
+		httpd.server_close()
+		log_debug("Server stopped on %s:%s" % netinfo)

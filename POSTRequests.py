@@ -1,7 +1,6 @@
 # This file handles the POST requests for this application.
 
 import State
-import BlinkyInterface
 
 valid_routes = ["/update","/stop","/clear"]
 
@@ -17,7 +16,7 @@ def is_valid_route(route):
 def invalid_request(route):
 	return "invalid_request"
 
-def process_route_with_data(route, data):
+def process_route_with_data(route, data, blinky_interface):
 	assert(route in valid_routes)
 
 	success = True
@@ -26,7 +25,7 @@ def process_route_with_data(route, data):
 			new_command = data["command"]
 			if validate_command(new_command):
 				success = State.set_current_command(new_command) and success 
-				BlinkyInterface.start_command(new_command)
+				blinky_interface.start_command(new_command)
 		if "color" in data:
 			new_color = data["color"]
 			print new_color
@@ -44,16 +43,16 @@ def process_route_with_data(route, data):
 			new_dyna_color = data["dynamic_color"]
 			if validate_dynamic_color(new_dyna_color):
 				success = State.set_dyna_color(new_dyna_color) and success
-				BlinkyInterface.start_dynamic_color(new_dyna_color)
+				blinky_interface.start_dynamic_color(new_dyna_color)
 		if "pattern_parameters" in data:
 			new_pattern_parameters = data["pattern_parameters"]
 			if validate_pattern_parameters(new_pattern_parameters):
 				success = State.set_pattern_parameters(new_pattern_parameters) and success
 	elif route == "/stop":
-		BlinkyInterface.start_command("Stop")
+		blinky_interface.start_command("Stop")
 		success = True
 	elif route == "/clear":
-		BlinkyInterface.start_command("Clear")
+		blinky_interface.start_command("Clear")
 		success = State.set_current_command("None") and success
 	else:
 		success = False

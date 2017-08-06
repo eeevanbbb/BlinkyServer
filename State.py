@@ -19,14 +19,10 @@ for command in available_commands:
 	if command[0] == "_":
 		available_commands.remove(command)
 
-# There's probably a better way to do this, but this works on MacOS
-DEBUG_MACHINE = False
-if ".DS_Store" in available_commands:
-	available_commands.remove(".DS_Store")
-	DEBUG_MACHINE = True
+DEBUG_MODE = False
 
 def is_debug_machine():
-	return DEBUG_MACHINE
+	return DEBUG_MODE
 
 special_commands = ["Random"]
 
