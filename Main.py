@@ -4,6 +4,7 @@ import argparse
 
 from Server import BlinkyServer
 from BlinkyInterface import BlinkyInterface
+from Utilities import log_debug
 import State
 
 if __name__ == '__main__':
@@ -14,7 +15,7 @@ if __name__ == '__main__':
     State.DEBUG_MODE = args.debug
 
     if State.is_debug_machine():
-        print("STARTING IN DEBUG MODE")
+        log_debug("STARTING IN DEBUG MODE")
 
     blinky_interface = BlinkyInterface()
     blinky_server = BlinkyServer()
