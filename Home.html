@@ -48,6 +48,9 @@
 
 					<h2>Dynamic Color</h2>
 					<input id="dyna_toggle" type="checkbox" data-toggle="toggle" onchange="handleDyna(this);"{% if dyna_color == true %} checked{% endif %}>
+
+					<h2>Reverse</h2>
+					<input id="is_reverse_toggle" type="checkbox" data-toggle="toggle" onchange="handleReverse(this);"{% if is_reverse == true %}checked{% endif %}>
 				</div>
 
 				<div class="col">
@@ -100,6 +103,10 @@
 			sendUpdate({"dynamic_color": checkbox.checked});
 		}
 
+		function handleReverse(checkbox) {
+			sendUpdate({"is_reverse": checkbox.checked});
+		}
+
 		function sendUpdate(data) {
 			var route = "/update";
 			sendPOSTRequest(route, data, null);
@@ -130,6 +137,7 @@
 					document.getElementById("green_input").value = state.color[1];
 					document.getElementById("blue_input").value = state.color[2];
 					document.getElementById("dyna_toggle").checked = state.dyna_color;
+					document.getElementById("is_reverse_toggle").checked = state.is_reverse;
 					document.getElementById("speed_input").value = state.speed;
 
 					document.getElementById("commandDropdown").innerHTML = state.command;

@@ -44,6 +44,13 @@ def process_route_with_data(route, data, blinky_interface):
 			if validate_dynamic_color(new_dyna_color):
 				success = State.set_dyna_color(new_dyna_color) and success
 				blinky_interface.start_dynamic_color(new_dyna_color)
+		if "is_reverse" in data:
+			new_is_reverse = data["is_reverse"]
+			if validate_is_reverse(new_is_reverse):
+				old_is_reverse = State.get_is_reverse()
+				success = State.set_is_reverse(new_is_reverse) and success
+				if old_is_reverse != new_is_reverse:
+					blinky_interface.restart_command()
 		if "pattern_parameters" in data:
 			new_pattern_parameters = data["pattern_parameters"]
 			if validate_pattern_parameters(new_pattern_parameters):
@@ -78,6 +85,9 @@ def validate_bpm(bpm):
 
 def validate_dynamic_color(dyna_color):
 	return type(dyna_color) == type(True)
+
+def validate_is_reverse(is_reverse):
+	return type(is_reverse) == type(True)
 
 def validate_pattern_parameters(pattern_parameters):
 	return isinstance(pattern_parameters, dict)

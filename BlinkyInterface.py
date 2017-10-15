@@ -8,6 +8,7 @@ from BlinkyTape import BlinkyTape
 import State
 import RandomGenerator
 import DynamicColor
+import Utilities
 
 class BlinkyInterface(object):
 	def __init__(self):
@@ -29,9 +30,9 @@ class BlinkyInterface(object):
 		for i in range(0,150):
 			if not State.is_debug_machine():
 				self.blinky_tape.sendPixel(0,0,0)
-		print "Clearing"
 		if not State.is_debug_machine():
 			self.blinky_tape.show()
+		print "Clearing"
 		State.blinky_lock = False
 
 	def random(self):
@@ -52,7 +53,13 @@ class BlinkyInterface(object):
 		else:
 			with open("Patterns/%s.txt" % command, 'r') as instruction_file:
 				instructions = instruction_file.readlines()
+				if State.get_is_reverse():
+					instructions.reverse()
 				self.start_with_instructions(instructions, command)
+
+	def restart_command(self):
+		State.set_kill_signal(1)
+		self.start_command(State.get_command())
 
 	def start_with_instructions(self, instructions, name):
 		State.running_loop = name
@@ -80,6 +87,9 @@ class BlinkyInterface(object):
 				self.execute_instruction(instruction)
 				if State.running_loop != name:
 					return
+				if State.should_kill():
+					State.did_kill()
+					return
 
 	def execute_instruction(self, instruction):
 		fields = self.parse_fields(instruction)
@@ -92,6 +102,8 @@ class BlinkyInterface(object):
 					self.blinky_tape.sendPixel(range_triple[2][0], range_triple[2][1], range_triple[2][2])
 		if not State.is_debug_machine():
 			self.blinky_tape.show()
+		else:
+			print(Utilities.simple_debug_view(ranges))
 		State.blinky_lock = False
 		time.sleep(1.0 / speed)
 

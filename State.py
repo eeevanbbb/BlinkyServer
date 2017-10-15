@@ -7,12 +7,14 @@ import DynamicPatternRegistry
 color = [0,0,255]
 speed = 1.0
 dyna_color = False
+is_reverse = False
 bpm = 120
 command = "None"
 pattern_parameters = {} # String: String
 
 running_loop = ""
 blinky_lock = False
+kill_signal = 0
 
 available_commands = map((lambda x: x.replace(".txt","")), os.listdir(os.path.join(os.path.dirname(__file__), 'Patterns')))
 for command in available_commands:
@@ -49,6 +51,9 @@ def get_bpm():
 def get_dyna_color():
 	return dyna_color
 
+def get_is_reverse():
+    return is_reverse
+
 def get_special_commands():
 	return special_commands
 
@@ -64,6 +69,8 @@ def class_for_dynamic_command(command):
 def get_pattern_parameters():
 	return pattern_parameters
 
+def should_kill():
+	return kill_signal > 0
 
 # Setters
 
@@ -92,7 +99,22 @@ def set_dyna_color(new_dyna_color):
 	dyna_color = new_dyna_color
 	return True
 
+def set_is_reverse(new_is_reverse):
+    global is_reverse
+    is_reverse = new_is_reverse
+    return True
+
 def set_pattern_parameters(new_pattern_parameters):
 	global pattern_parameters
 	pattern_parameters = new_pattern_parameters
+	return True
+
+def set_kill_signal(new_kill_signal):
+	global kill_signal
+	kill_signal = new_kill_signal
+	return True
+
+def did_kill():
+	global kill_signal
+	kill_signal -= 1
 	return True
