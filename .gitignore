@@ -2,3 +2,4 @@ NetworkInfo.txt
 *.pyc
 *.out
 *.err
+PubNubCredentials.txt

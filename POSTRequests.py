@@ -17,7 +17,7 @@ def invalid_request(route):
 	return "invalid_request"
 
 def process_route_with_data(route, data, blinky_interface):
-	assert(route in valid_routes)
+	# assert(route in valid_routes)
 
 	success = True
 	if route == "/update":
